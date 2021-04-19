@@ -4,10 +4,12 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_table as dt
+import plotly.graph_objects as go
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
 import base64
 import io
+import numpy as np
 
 app = dash.Dash()
 
@@ -64,8 +66,15 @@ preview = dbc.Card([
                 ], className='card text-white bg-dark mb-3', id='card_dataPreview')
 
 # NOTE: DISPLAY GRAPH
+x = np.arange(10)
 chart = dbc.Card([
-                    dbc.CardHeader('Chart')
+                    dbc.CardHeader('Chart'),
+                    dbc.CardBody([
+                        dcc.Dropdown('asdf'), html.Br(),
+                        dcc.Dropdown('asdfa23'),
+                        html.Div('chart'),
+                        dcc.Graph(figure=go.Figure(data=go.Scatter(x=x, y=x**2))) #, x='Date', y='Value'))
+                    ])
                 ], className='card text-white bg-dark mb-3', id='card_chart')
 
 
@@ -80,9 +89,8 @@ app.layout = dbc.Container([
                 data_picker], width=4),
             dbc.Col([
                 html.Div(id='hidden_data', style={'display': 'none'}),
-                dbc.Col(preview),
-                dbc.Col(chart)
-            ])
+                preview,
+                chart], width=8)
         ])
 ], fluid=True)
 
